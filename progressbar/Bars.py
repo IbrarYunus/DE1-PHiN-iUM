@@ -55,6 +55,7 @@ class Bars:
     def __init__(self, _duration, _current, _done = False):
         self.duration = _duration
         self.current = _current
+        self.done = _done
 
     def set_params(self, _clear = '_', _fill = '>', _edges = '[]', _length = 20, _carriage_return = True, _display_duration = True, _units = '', _display_edges = True):
         self.clear = _clear

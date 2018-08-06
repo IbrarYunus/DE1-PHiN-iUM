@@ -128,3 +128,9 @@ def play_path(path, name):
 
 def play_song_progress(duration):
     None
+
+
+def handle_keystrokes(master_thread, files, paths):
+    None
+
+
