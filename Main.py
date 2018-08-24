@@ -19,6 +19,8 @@ Plays all kinds of media files
 import Header
 import xml.etree.ElementTree as ET
 import MusicHandler
+import Status
+import HotKeys
 import _thread
 import threading
 import time
@@ -40,7 +42,7 @@ def beautifully_print_files(files):
     #     print("\033[0m" + files[2])
     print("\033[12;23f\033[30m" + truncate_middle(files[0], 20) + "\033[0m")
     print("\033[12;23f\033[37m" + truncate_middle(files[1], 20) + "\033[0m")
-    print("\033[12;23f\033[90m" + truncate_middle(files[2], 20) + "\033[0m")
+    print("\033[12;23f\033[90m" + truncate_middle(files[2], 20) + "\033[0m\n")
 
 
 def read_persistence():
@@ -94,57 +96,27 @@ def load_files():
 
 
 def initialize_display(files, paths):
-    print('Select MODE with CTRL+- and CTRL+= keys')
-    print('NEXT SONE :: 2')
-    print('PREV SONG :: 1')
+    None
+
 
     # master_thread = _thread.start_new_thread(MusicHandler.playtype_sequence, (files, paths))
-    master_thread = threading.Thread(target = MusicHandler.playtype_sequence, args = (files, paths))
-    master_thread.start()
-
-    sequence_flag = 1
-    random_flag = 0
-
-    print(master_thread)
-
-    def handle_hotkey_1():
-        print('hotkey-1')
-        nonlocal sequence_flag
-        nonlocal master_thread
-        nonlocal random_flag
-
-        if (sequence_flag == 0):
-            sequence_flag = 1
-            random_flag = 0
-            master_thread.join()
-            # master_thread = _thread.start_new_thread(MusicHandler.playtype_sequence, (files, paths))
-            print('playlist mode :: sequence')
-
-    def handle_hotkey_2():
-        print('hotkey-2')
-        nonlocal sequence_flag
-        nonlocal master_thread
-        nonlocal random_flag
-
-        if (random_flag == 0):
-            random_flag = 1
-            sequence_flag = 0
-            master_thread.join()
-            # master_thread = _thread.start_new_thread(MusicHandler.playtype_sequence(files, paths))
-            print('playlist mode :: shuffle')
-
-    # keyboard.on_press(handle_keystrokes)
-    keyboard.add_hotkey('ctrl+-', handle_hotkey_1, args=None)
-    keyboard.add_hotkey('ctrl+=', handle_hotkey_2, args=None)
-
-    while True:
-        time.sleep(1)
+    # master_thread = threading.Thread(target = MusicHandler.playtype_sequence, args = (files, paths))
+    # master_thread.start()
 
 
 if __name__ == "__main__":
     print("displaying graphic")
     Header.display_header()
     paths, files = load_files()
+
+    status = Status.Status()
+
+    hotkeys = HotKeys.HotKeys()
+    hotkeys.display()
+
+    hotkey_thread = threading.Thread(target = hotkeys.activate, args=(status, paths, files,))
+    hotkey_thread.start()
+
     initialize_display(files, paths)
 
 
