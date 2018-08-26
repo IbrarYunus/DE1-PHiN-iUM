@@ -17,8 +17,16 @@ class Status:
     track_index = 0
 
     # pointer to the current song
-    track = None
+    player = None
 
     next = False
 
     prev = False
+
+    pause = False
+
+    seek_forward = False
+
+    seek_backward = False
+
+    # vlc = None

@@ -30,15 +30,24 @@ class HotKeys:
         # print('hotkeys defined')
 
         def handle_hotkey_1():
-            print('\033[1;96;49m////////////PLAY: SEQUENCE MODE\033[0m')
+            print('\033[1;96;49m\n////////////PLAY: SEQUENCE MODE\033[0m')
             status.play_mode = 0
 
         def handle_hotkey_2():
-            print('\033[1;96;49m////////////PLAY: SHUFFLE MODE\033[0m')
+            print('\033[1;96;49m\n////////////PLAY: SHUFFLE MODE\033[0m')
             status.play_mode = 1
 
         def handle_hotkey_3():
-            if(status.track_playing == False):
+
+            if(status.track_playing == False and status.player != None):
+                status.player.play()
+                status.track_playing = True
+
+            if(status.track_playing == True and status.player != None):
+                status.player.stop()
+                status.track_playing = False
+
+            if(status.track_playing == False and status.player == None):
 
                 if(status.play_mode == 0):
                     status.track_playing = True
@@ -47,8 +56,6 @@ class HotKeys:
                     sequenceThread.start()
 
                 if(status.play_mode == 1):
-
-                    # perform shuffle
 
                     files_shuf = []
                     paths_shuf = []
@@ -77,6 +84,9 @@ class HotKeys:
         def handle_hotkey_5():
             status.prev = True
 
+        def handle_hotkey_6():
+            status.seek_forward = True
+
         def exit():
             os._exit(0)
 
@@ -87,6 +97,7 @@ class HotKeys:
         keyboard.add_hotkey('ctrl+3', handle_hotkey_3, args=None)
         keyboard.add_hotkey('ctrl+2', handle_hotkey_4, args=None)
         keyboard.add_hotkey('ctrl+1', handle_hotkey_5, args=None)
+        keyboard.add_hotkey('ctrl+5', handle_hotkey_6, args=None)
         keyboard.add_hotkey('ctrl+q', exit, args=None)
 
         while True:

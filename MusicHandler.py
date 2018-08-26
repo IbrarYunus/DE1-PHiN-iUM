@@ -36,7 +36,7 @@ class MusicHandler:
         assert(len(files) == len(paths))
 
         instance = vlc.Instance()
-        player = instance.media_player_new()
+        status.player = instance.media_player_new()
 
         x = 0
 
@@ -53,9 +53,9 @@ class MusicHandler:
             # player = instance.media_player_new()
             media = instance.media_new(path)
 
-            player.set_media(media)
+            status.player.set_media(media)
 
-            player.play()
+            status.player.play()
             # vlc.libvlc_media_parse(p_md=path)
             # time.sleep(1.5)
 
@@ -76,29 +76,45 @@ class MusicHandler:
             progress.set_params(_length=100, _carriage_return=True, _units=' seconds', _display_edges=False, _fill='\033[1;35;49m>', _clear="\033[1;36;49m-")
             progress.display()
 
-            for y in range(int(duration)):
+            status.track_playing = True
+
+            # vlc.libvlc_media_player_set_time(status.player, 10000)
+
+            while((vlc.libvlc_media_player_get_time(status.player)/1000) <= duration):
+            # for y in range(int(duration)):
+            #     print(vlc.libvlc_media_get_state(status.player))
+            #     print(vlc.libvlc_media_player_is_playing(status.player))
+
+                # if(vlc.libvlc_media_player_is_playing(status.player) == False):
+                #     break
+
+
+
                 if (status.next == True):
                     status.next = False
-                    player.stop()
+                    status.player.stop()
+                    status.track_playing = False
                     break
 
                 if (status.prev == True):
                     status.prev = False
-                    player.stop()
+                    status.player.stop()
+                    status.track_playing = False
                     x = x-2
                     break
 
-                time.sleep(1)
-                progress.next()
+                if (status.track_playing != False):
 
+                    progress.next()
+                    time.sleep(1)
 
+                if(status.seek_forward == True):
+                    vlc.libvlc_media_player_set_time(status.player, vlc.libvlc_media_player_get_time(status.player) + (15*1000) + (1*1000))
+                    status.seek_forward = False
+                    progress.skip15()
 
-            # while(playThread.isAlive):
-            #     if(status.next) == True:
-            #
-            #         status.next = False
-            #
-            #         break;
+                if (vlc.libvlc_media_player_is_playing(status.player) == False):
+                    break
 
 
     def playtype_random(self,files, paths):

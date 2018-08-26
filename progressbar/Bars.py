@@ -17,6 +17,7 @@ Specification of the bar-type progress of processes
 
 
 import time
+import libvlc as vlc
 
 class Bars:
     duration = 0
@@ -89,6 +90,11 @@ class Bars:
     def next(self):
         self.current = self.current + 1
         self.display()
+
+    def skip15(self):
+        self.current = self.current + 15
+        self.display()
+
 
 #
 # if __name__ == '__main__':
