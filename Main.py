@@ -14,7 +14,7 @@
 Plays all kinds of media files
 
 """
-
+from os.path import dirname
 
 import Header
 import xml.etree.ElementTree as ET
@@ -40,15 +40,20 @@ def beautifully_print_files(files):
     #     print("\036[0m" + files[0])
     #     print("\033[0m" + files[1])
     #     print("\033[0m" + files[2])
-    print("\033[12;23f\033[30m" + truncate_middle(files[0], 20) + "\033[0m")
-    print("\033[12;23f\033[37m" + truncate_middle(files[1], 20) + "\033[0m")
-    print("\033[12;23f\033[90m" + truncate_middle(files[2], 20) + "\033[0m\n")
+    # print("\033[12;23f\033[30m" + truncate_middle(files[0], 20) + "\033[0m")
+    # print("\033[12;23f\033[37m" + truncate_middle(files[1], 20) + "\033[0m")
+    # print("\033[12;23f\033[90m" + truncate_middle(files[2], 20) + "\033[0m\n")
+
+    print("\033[0m")
+    print("\033[1;47;49m" + truncate_middle(files[0], 20))
+    print("\033[0;37;49m" + truncate_middle(files[1], 20))
+    print("\033[0;90;49m" + truncate_middle(files[2], 20) + "\n")
 
 
 def read_persistence():
     persistenceDict = {}
 
-    tree = ET.parse('persistence.xml')
+    tree = ET.parse(dirname(__file__) + '/persistence.xml')
     root = tree.getroot()
     # print(root.find('previousLocation').attrib['directory'])
 
@@ -70,18 +75,18 @@ def write_persistence(updatePersistence):
 def load_files():
     oldPersistence = read_persistence()
 
-    print("[previously used directory] " + oldPersistence['previousLocation-directory'])
-    directory = input("Enter directory or press ENTER to load previous: ")
+    print("\033[1;96;49m[previously used directory] \033[1;95;49m" + oldPersistence['previousLocation-directory'])
+    directory = input("\033[1;96;49mEnter directory or press ENTER to load previous: ")
 
     if (directory == ""):
-        print('[!] using previously used directory')
+        print('\033[1;96;49m[!] using previously used directory')
         directory = oldPersistence['previousLocation-directory']
     else:
         updatePersistence = {'previousLocation-directory': directory}
         write_persistence(updatePersistence)
 
-    print("[dir] " + directory)
-    print("[file list]")
+    print("\033[1;96;49m[dir] \033[1;95;49m" + directory)
+    print("\033[1;96;49m[file list]")
     files = []
     paths = []
     for (dirpath, dirnames, filenames) in walk(directory):

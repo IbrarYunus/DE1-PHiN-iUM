@@ -15,27 +15,10 @@ Plays all kinds of media files
 
 """
 import threading
+from io import StringIO
 
-"""
+import sys
 
-  _____        _____        _____
- /     \      /     \      /     \
-<       >----<       >----<       >
- \_____/      \_____/      \_____/
- /     \      /     \      /     \
-<       >----<       >----<       >----.
- \_____/      \_____/      \_____/      \
-       \      /     \      /     \      /
-        >----<       >----<       >----<
-       /      \_____/      \_____/      \_____
-       \      /     \      /     \      /     \
-        `----<       >----<       >----<       >
-              \_____/      \_____/      \_____/
-                           /     \      /
-                          <       >----'
-                           \_____/
-
-"""
 
 import libvlc as vlc
 import keyboard
@@ -76,15 +59,21 @@ class MusicHandler:
             # vlc.libvlc_media_parse(p_md=path)
             # time.sleep(1.5)
 
+            sys.stdout = StringIO();
+            sys.stderr = StringIO();
+
             audio = MP3(path)
 
             duration = audio.info.length
+
+            sys.stdout = sys.__stdout__;  # These are provided by python
+            sys.stderr = sys.__stderr__;
             # print(duration)
-            print('\n' + str(int(duration / 60)) + ' minutes  ' + str(int(duration % 60)) + ' seconds', end=" --- ")
+            print('\n\033[1;30;105m ' + str(int(duration / 60)) + ' minutes  ' + str(int(duration % 60)) + ' seconds', end=" --- ")
             print('playing :: ' + name)
 
             progress = Bars(int(duration), 1)
-            progress.set_params(_length=100, _carriage_return=True, _units=' seconds', _display_edges=False)
+            progress.set_params(_length=100, _carriage_return=True, _units=' seconds', _display_edges=False, _fill='\033[1;35;49m>', _clear="\033[1;36;49m-")
             progress.display()
 
             for y in range(int(duration)):
@@ -161,7 +150,7 @@ class MusicHandler:
         print('playing :: ' + name)
 
         progress = Bars(int(duration), 1)
-        progress.set_params(_length=100, _carriage_return=True, _units=' seconds', _display_edges=False)
+        progress.set_params(_length=100, _carriage_return=True, _units=' seconds', _display_edges=False, _fill='T')
         progress.display()
 
         for x in range(int(duration)):

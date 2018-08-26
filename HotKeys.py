@@ -1,8 +1,14 @@
 import threading
-
+import random
 import keyboard
 import time
+
+import sys
+
+import os
+
 import MusicHandler
+from random import shuffle
 
 class HotKeys:
 
@@ -24,18 +30,43 @@ class HotKeys:
         # print('hotkeys defined')
 
         def handle_hotkey_1():
-            print('////////////PLAY: SEQUENCE MODE')
+            print('\033[1;96;49m////////////PLAY: SEQUENCE MODE\033[0m')
             status.play_mode = 0
 
         def handle_hotkey_2():
-            print('////////////PLAY: SHUFFLE MODE')
+            print('\033[1;96;49m////////////PLAY: SHUFFLE MODE\033[0m')
             status.play_mode = 1
 
         def handle_hotkey_3():
             if(status.track_playing == False):
-                status.track_playing = True
-                sequenceThread = threading.Thread(target=musicHandler.playtype_sequence, args=(status, files, paths,))
-                sequenceThread.start()
+
+                if(status.play_mode == 0):
+                    status.track_playing = True
+                    sequenceThread = threading.Thread(target=musicHandler.playtype_sequence,
+                                                      args=(status, files, paths,))
+                    sequenceThread.start()
+
+                if(status.play_mode == 1):
+
+                    # perform shuffle
+
+                    files_shuf = []
+                    paths_shuf = []
+
+                    index_shuf = list(range(len(files)))
+                    random.shuffle(index_shuf)
+
+                    for i in index_shuf:
+                        files_shuf.append(files[i])
+                        paths_shuf.append(paths[i])
+
+
+
+                    status.track_playing = True
+                    sequenceThread = threading.Thread(target=musicHandler.playtype_sequence,
+                                                      args=(status, files_shuf, paths_shuf,))
+                    sequenceThread.start()
+
                 # musicHandler.playtype_sequence(status, files, paths)
             else:
                 status.track_playing = False
@@ -46,6 +77,9 @@ class HotKeys:
         def handle_hotkey_5():
             status.prev = True
 
+        def exit():
+            os._exit(0)
+
 
         # keyboard.on_press(handle_keystrokes)
         keyboard.add_hotkey('ctrl+-', handle_hotkey_1, args=None)
@@ -53,6 +87,7 @@ class HotKeys:
         keyboard.add_hotkey('ctrl+3', handle_hotkey_3, args=None)
         keyboard.add_hotkey('ctrl+2', handle_hotkey_4, args=None)
         keyboard.add_hotkey('ctrl+1', handle_hotkey_5, args=None)
+        keyboard.add_hotkey('ctrl+q', exit, args=None)
 
         while True:
             time.sleep(1)

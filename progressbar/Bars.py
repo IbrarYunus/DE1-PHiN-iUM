@@ -15,26 +15,6 @@ Specification of the bar-type progress of processes
 
 """
 
-"""
-
-  _____        _____        _____
- /     \      /     \      /     \
-<       >----<       >----<       >
- \_____/      \_____/      \_____/
- /     \      /     \      /     \
-<       >----<       >----<       >----.
- \_____/      \_____/      \_____/      \
-       \      /     \      /     \      /
-        >----<       >----<       >----<
-       /      \_____/      \_____/      \_____
-       \      /     \      /     \      /     \
-        `----<       >----<       >----<       >
-              \_____/      \_____/      \_____/
-                           /     \      /
-                          <       >----'
-                           \_____/
-
-"""
 
 import time
 
@@ -44,7 +24,7 @@ class Bars:
     done = False
 
     clear = '_'
-    fill = '>'
+    fill = ' '
     edges = '[]'
     length = 20
     carriage_return = True
@@ -57,7 +37,7 @@ class Bars:
         self.current = _current
         self.done = _done
 
-    def set_params(self, _clear = '_', _fill = '>', _edges = '[]', _length = 20, _carriage_return = True, _display_duration = True, _units = '', _display_edges = True):
+    def set_params(self, _clear = '_', _fill = None, _edges = '[]', _length = 20, _carriage_return = True, _display_duration = True, _units = '', _display_edges = True):
         self.clear = _clear
         self.fill = _fill
         assert(len(_edges) == 2)
@@ -76,10 +56,7 @@ class Bars:
         edge_end = self.edges[1]
         filled = int((self.current * self.length)/self.duration)
 
-        if(self.display_duration == False):
-            None
-        else:
-            string_builder = string_builder + str(self.current) + '/' + str(self.duration) + self.units + ' '
+
 
         if(self.display_edges == True):
             string_builder = string_builder + edge_start
@@ -95,35 +72,40 @@ class Bars:
         if(self.display_edges == True):
             string_builder = string_builder + edge_end
 
+        if (self.display_duration == False):
+            None
+        else:
+            string_builder = string_builder + str(self.current) + '/' + str(self.duration) + self.units
+
 
 
         if (self.carriage_return == False):
             print(string_builder)
         else:
             # print("'\r{0}".format(random.randint(1,200)), end='')
-            print("'\r" + string_builder, end='')
+            print("\r" + string_builder, end='')
     #
 
     def next(self):
         self.current = self.current + 1
         self.display()
 
-
-if __name__ == '__main__':
-    None
-    duration = 350
-    current = 1
-
-    print('creating new bars object')
-    a = Bars(345,100)
-    print('testing params setting')
-    a.set_params(_length=100, _carriage_return=True, _units=' seconds', _display_edges=False)
-    print('testing printing')
-    a.display()
-
-    for x in range(100,345):
-        time.sleep(0.09)
-        a.next()
-        # sys.stdout.flush()
-        # print('', flush=True)
-
+#
+# if __name__ == '__main__':
+#     None
+#     duration = 350
+#     current = 1
+#
+#     print('creating new bars object')
+#     a = Bars(345,100)
+#     print('testing params setting')
+#     a.set_params(_length=100, _carriage_return=True, _units=' seconds', _display_edges=False)
+#     print('testing printing')
+#     a.display()
+#
+#     for x in range(100,345):
+#         time.sleep(0.09)
+#         a.next()
+#         # sys.stdout.flush()
+#         # print('', flush=True)
+#
