@@ -33,6 +33,7 @@
    - Python 3.6
 ---
 ### TODO
-   - Fix keystroke capture (currently using Python keyboard module)
-   - Verify that threads sleep and do not block
+   - Make more cyberpunkish
+   - Add support for backward seeking
+   - Package for Windows 10 - Anniversary Update
    - Package for Ubuntu 16.04 
