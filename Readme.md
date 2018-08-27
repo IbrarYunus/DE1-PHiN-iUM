@@ -37,3 +37,4 @@
    - Add support for backward seeking
    - Package for Windows 10 - Anniversary Update
    - Package for Ubuntu 16.04 
+   - Add curses support
