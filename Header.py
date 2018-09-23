@@ -34,7 +34,10 @@ graphic = [ '\033[1;96;49m ',
 
 
 def display_header():
+    width = os.get_terminal_size().columns
     for x in graphic:
         x = x.replace('-', ' ')
-        print(x)
-    print("created by Ibrar Yunus\n")
+        print(x.center(width), end = '')
+    print("\n")
+    print("created by Ibrar Yunus".center(width))
+    print("\n")

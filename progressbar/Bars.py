@@ -95,6 +95,11 @@ class Bars:
         self.current = self.current + 15
         self.display()
 
+    def rewind15(self):
+        self.current = self.current - 15
+        self.display()
+
+
 
 #
 # if __name__ == '__main__':

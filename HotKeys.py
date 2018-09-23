@@ -14,13 +14,18 @@ class HotKeys:
 
     def display(self):
 
-        print("////////////////////////////////////////////")
+        print("\033[1;91;49m////////////////////////////////////////////")
         print("-------------PLAYLIST CONTROLS-------------")
         print("CTRL + - _________Sequence Play____________")
         print("CTRL + = _________Shuffle Play_____________")
         print("\n--------------TRACK CONTROLS---------------")
         print("CTRL + 1 _________Previous Track___________")
         print("CTRL + 2 _________Next Track_______________")
+        print("CTRL + 3 _________Play/Pause_______________")
+        print("CTRL + 4 _________Seek Forward_____________")
+        print("CTRL + 5 _________Seek Backward____________")
+        print("\n--------------OTHER CONTROLS---------------")
+        print("CTRL + Q _________Exit_____________________")
         print("////////////////////////////////////////////")
 
     def activate(self, status, paths, files):
@@ -39,13 +44,15 @@ class HotKeys:
 
         def handle_hotkey_3():
 
-            if(status.track_playing == False and status.player != None):
-                status.player.play()
-                status.track_playing = True
-
-            if(status.track_playing == True and status.player != None):
-                status.player.stop()
-                status.track_playing = False
+            # if(status.paused == True and status.track_playing == False):
+            #     # status.player.play()
+            #     status.paused = False
+            #     status.track_playing = True
+            #
+            # if(status.paused == False and status.):
+            #     # status.player.stop()
+            #     status.paused = True
+            #     status.track_playing = False
 
             if(status.track_playing == False and status.player == None):
 
@@ -74,7 +81,6 @@ class HotKeys:
                                                       args=(status, files_shuf, paths_shuf,))
                     sequenceThread.start()
 
-                # musicHandler.playtype_sequence(status, files, paths)
             else:
                 status.track_playing = False
 
@@ -87,6 +93,9 @@ class HotKeys:
         def handle_hotkey_6():
             status.seek_forward = True
 
+        def handle_hotkey_7():
+            status.seek_backward = True
+
         def exit():
             os._exit(0)
 
@@ -98,6 +107,7 @@ class HotKeys:
         keyboard.add_hotkey('ctrl+2', handle_hotkey_4, args=None)
         keyboard.add_hotkey('ctrl+1', handle_hotkey_5, args=None)
         keyboard.add_hotkey('ctrl+5', handle_hotkey_6, args=None)
+        keyboard.add_hotkey('ctrl+4', handle_hotkey_7, args=None)
         keyboard.add_hotkey('ctrl+q', exit, args=None)
 
         while True:

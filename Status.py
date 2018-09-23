@@ -29,4 +29,5 @@ class Status:
 
     seek_backward = False
 
+    paused = False
     # vlc = None

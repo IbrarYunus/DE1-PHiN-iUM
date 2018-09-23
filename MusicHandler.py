@@ -69,7 +69,7 @@ class MusicHandler:
             sys.stdout = sys.__stdout__;  # These are provided by python
             sys.stderr = sys.__stderr__;
             # print(duration)
-            print('\n\033[1;30;105m ' + str(int(duration / 60)) + ' minutes  ' + str(int(duration % 60)) + ' seconds', end=" --- ")
+            print('\n\033[1;30;105m ' + str(int(duration / 60)) + ' minutes  ' + str(int(duration % 60)) + ' seconds \033[1;39;49m', end=" --- ")
             print('playing :: ' + name)
 
             progress = Bars(int(duration), 1)
@@ -80,14 +80,15 @@ class MusicHandler:
 
             # vlc.libvlc_media_player_set_time(status.player, 10000)
 
-            while((vlc.libvlc_media_player_get_time(status.player)/1000) <= duration):
-            # for y in range(int(duration)):
-            #     print(vlc.libvlc_media_get_state(status.player))
-            #     print(vlc.libvlc_media_player_is_playing(status.player))
+            while(((vlc.libvlc_media_player_get_time(status.player)/1000) <= duration)):
 
-                # if(vlc.libvlc_media_player_is_playing(status.player) == False):
-                #     break
-
+                # if(status.paused == True):
+                #     status.player.stop()
+                #     while(True):
+                #         print('in here')
+                #         if(status.paused == False):
+                #             status.player.play()
+                #             break
 
 
                 if (status.next == True):
@@ -112,6 +113,11 @@ class MusicHandler:
                     vlc.libvlc_media_player_set_time(status.player, vlc.libvlc_media_player_get_time(status.player) + (15*1000) + (1*1000))
                     status.seek_forward = False
                     progress.skip15()
+
+                if (status.seek_backward == True):
+                    vlc.libvlc_media_player_set_time(status.player,vlc.libvlc_media_player_get_time(status.player) - (15 * 1000) - (1 * 1000))
+                    status.seek_backward = False
+                    progress.rewind15()
 
                 if (vlc.libvlc_media_player_is_playing(status.player) == False):
                     break

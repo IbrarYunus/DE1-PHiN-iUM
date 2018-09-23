@@ -24,7 +24,7 @@ import HotKeys
 import _thread
 import threading
 import time
-from os import walk, path
+from os import walk, path, get_terminal_size
 import keyboard
 
 
@@ -110,7 +110,9 @@ def initialize_display(files, paths):
 
 
 if __name__ == "__main__":
-    print("displaying graphic")
+    # width = get_terminal_size().columns
+
+
     Header.display_header()
     paths, files = load_files()
 
