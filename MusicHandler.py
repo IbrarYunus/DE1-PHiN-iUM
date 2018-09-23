@@ -2,24 +2,38 @@
 # -*- coding: utf-8 -*-
 
 
-#####################################################################
-# Music Player Project                                              #
-# Ibrar Yunus  University of St. Andrews                            #
-# July 2018                                                         #
-#####################################################################
-#####################################################################
-
-
 """
-Plays all kinds of media files
-
+ __         _           _         __
+( '\___      \_  (^)  _/      ___/' )
+ \ , ' \____   \ / \ /   ____/ ' , /
+  \__ ' , ' \___{~V~}___/ ' , ' __/
+ ____\_________ {<!>} _________/____
+/ , ' , ' , ' ,`{<!>}~, ' , ' , ' , \
+\_____________ /{<!>}\______________/
+                 \./
+                 (~)
+                 (~)
+                 (~)
+                 (~)
+                 (~)
+                 (~)
+                 ,0,
+                  "
+ * Author: Ibrar Yunus
+ * <University of St. Andrews>
+ * <Queries:      yunus.ibrar@gmai.com>
+ * United Kingdom
+ * ------------------------------------
+ * Setup Details:
+ * ---------- Lenovo Y700 Gaming Laptop
+ * ------------------------- Windows 10
+ * ------------------------- Python 3.6
+ * --------------------- PyCharm 2017.3
+ * --------- Interfaced with VLC Player
 """
-import threading
+
 from io import StringIO
-
 import sys
-
-
 import libvlc as vlc
 import keyboard
 import time
