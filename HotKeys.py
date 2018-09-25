@@ -88,10 +88,17 @@ class HotKeys:
             #     status.paused = False
             #     status.track_playing = True
             #
-            # if(status.paused == False and status.):
-            #     # status.player.stop()
-            #     status.paused = True
-            #     status.track_playing = False
+            if(status.paused == False and status.player != None):
+                # status.player.stop()
+                status.paused = True
+                # status.track_playing = False
+                status.player.pause()
+                # print("GONNA PAUSE")
+
+            elif(status.paused == True):
+                status.paused = False
+                status.player.play()
+                # print("GONNA UNPAUSE")
 
             if(status.track_playing == False and status.player == None):
 
@@ -112,8 +119,6 @@ class HotKeys:
                     for i in index_shuf:
                         files_shuf.append(files[i])
                         paths_shuf.append(paths[i])
-
-
 
                     status.track_playing = True
                     sequenceThread = threading.Thread(target=musicHandler.playtype_sequence,
@@ -153,7 +158,7 @@ class HotKeys:
         def exit():
             os._exit(0)
 
-        keyboard.add_hotkey('ctrl+-', handle_hotkey_1, args=None)
+            keyboard.add_hotkey('ctrl+-', handle_hotkey_1, args=None)
         keyboard.add_hotkey('ctrl+=', handle_hotkey_2, args=None)
         keyboard.add_hotkey('ctrl+3', handle_hotkey_3, args=None)
         keyboard.add_hotkey('ctrl+2', handle_hotkey_4, args=None)

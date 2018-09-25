@@ -40,7 +40,7 @@ import time
 import _thread
 import random
 from progressbar.Bars import Bars
-from mutagen.mp3 import MP3
+from progressbar.Utilities import stdout_redirected
 
 """ CLASS:
     Handles playback, stoppping, pausing, skipping, reversing of 
@@ -56,6 +56,10 @@ class MusicHandler:
         skipping track)
     """
     def playtype_sequence(self,status,files, paths):
+
+        # FIXME: C stderr/stdout redirection fails
+        stdout_redirected()
+
         total = len(files)
         assert(len(files) == len(paths))
 
@@ -70,26 +74,17 @@ class MusicHandler:
             path = paths[x]
             name = files[x]
 
-            media = instance.media_new(path)
-            media.parse()
-            media.get_duration()
+            # media = instance.media_new(path)
+            # media.parse()
+            # media.get_duration()
 
             media = instance.media_new(path)
-
+            vlc.libvlc_media_parse(media)
+            duration = media.get_duration()/1000
             status.player.set_media(media)
 
             status.player.play()
 
-
-            sys.stdout = StringIO();
-            sys.stderr = StringIO();
-
-            audio = MP3(path)
-
-            duration = audio.info.length
-
-            sys.stdout = sys.__stdout__;
-            sys.stderr = sys.__stderr__;
             print('\n\033[1;30;105m ' + str(int(duration / 60)) + ' minutes  ' + str(int(duration % 60)) + ' seconds \033[1;39;49m', end=" --- ")
             print('playing :: ' + name)
             progress = Bars(int(duration), 1)
@@ -99,11 +94,19 @@ class MusicHandler:
 
             while(((vlc.libvlc_media_player_get_time(status.player)/1000) <= duration)):
 
+                if (status.paused == True):
+                    while(True):
+                        if(status.paused == False):
+                            status.track_playing = True
+                            break;
+
                 if (status.next == True):
                     status.next = False
                     status.player.stop()
                     status.track_playing = False
                     break
+
+
 
                 if (status.prev == True):
                     status.prev = False
@@ -127,8 +130,8 @@ class MusicHandler:
                     status.seek_backward = False
                     progress.rewind15()
 
-                if (vlc.libvlc_media_player_is_playing(status.player) == False):
-                    break
+                # if (vlc.libvlc_media_player_is_playing(status.player) == False and status.paused == False):
+                #     break
 
 
     """ DEPRECIATED METHOD!
