@@ -35,10 +35,15 @@ import time
 import os
 import MusicHandler
 
+""" CLASS:
+    Defines and activates the hotkeys
+"""
 class HotKeys:
 
+    """ METHOD:
+        Displays the available hotkeys
+    """
     def display(self):
-
         print("\033[1;91;49m////////////////////////////////////////////")
         print("-------------PLAYLIST CONTROLS-------------")
         print("CTRL + - _________Sequence Play____________")
@@ -53,22 +58,31 @@ class HotKeys:
         print("CTRL + Q _________Exit_____________________")
         print("////////////////////////////////////////////")
 
+    """ METHOD:
+        Maps inner methods to hotkeys
+    """
     def activate(self, status, paths, files):
         musicHandler = MusicHandler.MusicHandler()
 
-
-        # print('hotkeys defined')
-
+        """ INNER METHOD:
+            Changes playtype to sequence
+        """
         def handle_hotkey_1():
             print('\033[1;96;49m\n////////////PLAY: SEQUENCE MODE\033[0m')
             status.play_mode = 0
 
+        """ INNER METHOD:
+            Changes playtype to random
+        """
         def handle_hotkey_2():
             print('\033[1;96;49m\n////////////PLAY: SHUFFLE MODE\033[0m')
             status.play_mode = 1
 
+        """ INNER METHOD:
+            Plays/Stops the track
+        """
         def handle_hotkey_3():
-
+            # FIXME: Inspect and solve this
             # if(status.paused == True and status.track_playing == False):
             #     # status.player.play()
             #     status.paused = False
@@ -109,23 +123,36 @@ class HotKeys:
             else:
                 status.track_playing = False
 
+        """ INNER METHOD:
+            Sets status.next to True
+        """
         def handle_hotkey_4():
             status.next = True
 
+        """ INNER METHOD:
+            Sets status.prev to True
+        """
         def handle_hotkey_5():
             status.prev = True
 
+        """ INNER METHOD:
+            Sets status.seek_forward to true
+        """
         def handle_hotkey_6():
             status.seek_forward = True
 
+        """ INNER METHOD:
+            Sets status.seek_backward to true
+        """
         def handle_hotkey_7():
             status.seek_backward = True
 
+        """ INNER METHOD:
+            Exits the application
+        """
         def exit():
             os._exit(0)
 
-
-        # keyboard.on_press(handle_keystrokes)
         keyboard.add_hotkey('ctrl+-', handle_hotkey_1, args=None)
         keyboard.add_hotkey('ctrl+=', handle_hotkey_2, args=None)
         keyboard.add_hotkey('ctrl+3', handle_hotkey_3, args=None)

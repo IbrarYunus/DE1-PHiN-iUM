@@ -42,9 +42,19 @@ import random
 from progressbar.Bars import Bars
 from mutagen.mp3 import MP3
 
-
+""" CLASS:
+    Handles playback, stoppping, pausing, skipping, reversing of 
+    music files in the playlist
+"""
 class MusicHandler:
 
+    """ METHOD:
+        Plays the files (passes as the 'files' parameter) in
+        sequence
+        The passes Status() object is updated when the state of
+        MusicHandler object changes (e.g.  when pausing a track, or
+        skipping track)
+    """
     def playtype_sequence(self,status,files, paths):
         total = len(files)
         assert(len(files) == len(paths))
@@ -63,15 +73,13 @@ class MusicHandler:
             media = instance.media_new(path)
             media.parse()
             media.get_duration()
-            # instance = vlc.Instance()
-            # player = instance.media_player_new()
+
             media = instance.media_new(path)
 
             status.player.set_media(media)
 
             status.player.play()
-            # vlc.libvlc_media_parse(p_md=path)
-            # time.sleep(1.5)
+
 
             sys.stdout = StringIO();
             sys.stderr = StringIO();
@@ -80,30 +88,16 @@ class MusicHandler:
 
             duration = audio.info.length
 
-            sys.stdout = sys.__stdout__;  # These are provided by python
+            sys.stdout = sys.__stdout__;
             sys.stderr = sys.__stderr__;
-            # print(duration)
             print('\n\033[1;30;105m ' + str(int(duration / 60)) + ' minutes  ' + str(int(duration % 60)) + ' seconds \033[1;39;49m', end=" --- ")
             print('playing :: ' + name)
-
             progress = Bars(int(duration), 1)
             progress.set_params(_length=100, _carriage_return=True, _units=' seconds', _display_edges=False, _fill='\033[1;35;49m>', _clear="\033[1;36;49m-")
             progress.display()
-
             status.track_playing = True
 
-            # vlc.libvlc_media_player_set_time(status.player, 10000)
-
             while(((vlc.libvlc_media_player_get_time(status.player)/1000) <= duration)):
-
-                # if(status.paused == True):
-                #     status.player.stop()
-                #     while(True):
-                #         print('in here')
-                #         if(status.paused == False):
-                #             status.player.play()
-                #             break
-
 
                 if (status.next == True):
                     status.next = False
@@ -137,6 +131,9 @@ class MusicHandler:
                     break
 
 
+    """ DEPRECIATED METHOD!
+        Shuffles songs before playing them
+    """
     def playtype_random(self,files, paths):
 
         # the shuffling operation
@@ -169,7 +166,9 @@ class MusicHandler:
 
 
 
-
+    """ METHOD:
+        Plays a song and generates it's progress bar
+    """
     def play_path(self,path, name):
         instance = vlc.Instance()
         player = instance.media_player_new()
@@ -192,14 +191,3 @@ class MusicHandler:
         for x in range(int(duration)):
             time.sleep(1)
             progress.next()
-
-
-
-    def play_song_progress(duration):
-        None
-
-
-    def handle_keystrokes(master_thread, files, paths):
-        None
-
-

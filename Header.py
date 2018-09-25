@@ -30,9 +30,11 @@
  * --------------------- PyCharm 2017.3
  * --------- Interfaced with VLC Player
 """
-
 import os
 
+"""
+    Global header graphic
+"""
 graphic = [ '\033[1;96;49m ',
 '------___-----------___-------___-----------___-----',
 '-----/\--\---------/\__\-----/\--\---------/\__\----',
@@ -48,6 +50,9 @@ graphic = [ '\033[1;96;49m ',
 ]
 
 
+""" METHOD:
+    Displays the header graphic line by line
+"""
 def display_header():
     width = os.get_terminal_size().columns
     for x in graphic:

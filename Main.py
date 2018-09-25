@@ -32,45 +32,34 @@
  * --------- Interfaced with VLC Player
 """
 
-"""
-Plays music!
-"""
 from os.path import dirname
-
 import Header
 import xml.etree.ElementTree as ET
-import MusicHandler
 import Status
 import HotKeys
-import _thread
 import threading
-import time
-from os import walk, path, get_terminal_size
-import keyboard
+from os import walk, path
 
 
+""" METHOD:
+    Prints the first 3 read files 
+    beautifully 
+"""
 def beautifully_print_files(files):
     def truncate_middle(s, n):
         if len(s) <= n:
-            # string is already short-enough
             return s
         return s[:11] + " ... " + s[-7:]
 
     print("")
-    # if(len(files) >= 3):
-    #     print("\036[0m" + files[0])
-    #     print("\033[0m" + files[1])
-    #     print("\033[0m" + files[2])
-    # print("\033[12;23f\033[30m" + truncate_middle(files[0], 20) + "\033[0m")
-    # print("\033[12;23f\033[37m" + truncate_middle(files[1], 20) + "\033[0m")
-    # print("\033[12;23f\033[90m" + truncate_middle(files[2], 20) + "\033[0m\n")
-
     print("\033[0m")
     print("\033[1;47;49m" + truncate_middle(files[0], 20))
     print("\033[0;37;49m" + truncate_middle(files[1], 20))
     print("\033[0;90;49m" + truncate_middle(files[2], 20) + "\n")
 
-
+""" METHOD: 
+    Read the persistence XML file
+"""
 def read_persistence():
     persistenceDict = {}
 
@@ -82,7 +71,11 @@ def read_persistence():
 
     return persistenceDict
 
-
+""" METHOD:
+    Writes the persistence XML file; the XML file stores
+    path to previously used music directory, play-counts,
+    etc. 
+"""
 def write_persistence(updatePersistence):
     data = ET.Element('data')
     previousLocation = ET.SubElement(data, 'previousLocation')
@@ -92,7 +85,11 @@ def write_persistence(updatePersistence):
     persistenceFile = open("persistence.xml", "w")
     persistenceFile.write(persistenceObject)
 
-
+""" METHOD: 
+    Loads the persistence XML file 
+    and creates a list of paths,file-names in the
+    music directory
+"""
 def load_files():
     oldPersistence = read_persistence()
 
@@ -120,25 +117,19 @@ def load_files():
 
     return paths, files
 
-
+""" DEPRECIATED METHOD:
+    ...
+"""
 def initialize_display(files, paths):
     None
 
-
-    # master_thread = _thread.start_new_thread(MusicHandler.playtype_sequence, (files, paths))
-    # master_thread = threading.Thread(target = MusicHandler.playtype_sequence, args = (files, paths))
-    # master_thread.start()
-
-
+""" METHOD:
+    The main method
+"""
 if __name__ == "__main__":
-    # width = get_terminal_size().columns
-
-
     Header.display_header()
     paths, files = load_files()
-
     status = Status.Status()
-
     hotkeys = HotKeys.HotKeys()
     hotkeys.display()
 
@@ -148,6 +139,5 @@ if __name__ == "__main__":
     initialize_display(files, paths)
 
 
-"""
-TODO: solve the multi-threaded keypress issue
-"""
+
+# FIXME: solve the multi-threaded keypress issue
